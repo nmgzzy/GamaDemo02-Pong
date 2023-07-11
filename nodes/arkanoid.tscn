@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cypafwwxofa5"]
+[gd_scene load_steps=13 format=3 uid="uid://cypafwwxofa5"]
 
 [ext_resource type="PackedScene" uid="uid://3hi38bv45cb7" path="res://nodes/bricks.tscn" id="1_0h1iu"]
 [ext_resource type="Script" path="res://nodes/arkanoid.gd" id="1_i3vuw"]
@@ -18,14 +18,23 @@ func _physics_process(delta):
 			position.x = 1152 - 75
 "
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hj4c6"]
+bounce = 1.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_isspi"]
 size = Vector2(1172, 68)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i0hcy"]
 size = Vector2(1172, 68)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_582es"]
+bounce = 1.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kbqgy"]
 size = Vector2(89, 657)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yfupm"]
+bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t5cgn"]
 size = Vector2(81, 661)
@@ -119,7 +128,8 @@ rotation = 1.5708
 scale = Vector2(1, 1.5)
 script = SubResource("GDScript_affcn")
 
-[node name="UpWall" type="Area2D" parent="."]
+[node name="UpWall" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_hj4c6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
 position = Vector2(576, -29)
@@ -131,13 +141,15 @@ shape = SubResource("RectangleShape2D_isspi")
 position = Vector2(576, 672)
 shape = SubResource("RectangleShape2D_i0hcy")
 
-[node name="LeftWall" type="Area2D" parent="."]
+[node name="LeftWall" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_582es")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
 position = Vector2(-35.5, 327.5)
 shape = SubResource("RectangleShape2D_kbqgy")
 
-[node name="RightWall" type="Area2D" parent="."]
+[node name="RightWall" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_yfupm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 position = Vector2(1183.5, 325.5)
@@ -145,3 +157,7 @@ shape = SubResource("RectangleShape2D_t5cgn")
 
 [node name="Ball" parent="." instance=ExtResource("4_f8nir")]
 position = Vector2(576, 576)
+linear_damp_mode = 1
+
+[connection signal="body_entered" from="player" to="." method="_on_player_body_entered"]
+[connection signal="body_entered" from="DownWall" to="." method="_on_down_wall_body_entered"]

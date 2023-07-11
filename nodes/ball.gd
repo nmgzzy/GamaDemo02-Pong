@@ -17,6 +17,13 @@ func flip_ball_x(pos):
 	linear_velocity = linear_velocity.normalized() * Global.ball_speed
 	Global.ball_speed += 50
 	Global.player_speed += 50
+	
+func flip_ball_y(pos):
+	linear_velocity = (position - pos)
+	linear_velocity.y *= 2
+	linear_velocity = linear_velocity.normalized() * Global.ball_speed
+	Global.ball_speed += 10
+	Global.player_speed += 10
 		
 func reset_ball():
 	reset_flag = true
