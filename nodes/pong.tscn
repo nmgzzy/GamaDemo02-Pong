@@ -1,0 +1,137 @@
+[gd_scene load_steps=15 format=3 uid="uid://djrt7xqd4jj85"]
+
+[ext_resource type="Texture2D" uid="uid://c4bd0317dom8r" path="res://assets/line.png" id="1_3iwb7"]
+[ext_resource type="Script" path="res://nodes/pong.gd" id="1_mjex6"]
+[ext_resource type="PackedScene" uid="uid://bnbmu4bfm3xrd" path="res://nodes/ball.tscn" id="2_3q6p7"]
+[ext_resource type="PackedScene" uid="uid://drjpvx05obpob" path="res://nodes/player.tscn" id="3_f8uf4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4o87"]
+size = Vector2(85, 671)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_51dm4"]
+size = Vector2(71.5, 671)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6jl4k"]
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8stox"]
+size = Vector2(1172, 68)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2qoj7"]
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d6jek"]
+size = Vector2(1172, 55.5)
+
+[sub_resource type="GDScript" id="GDScript_cm28y"]
+script/source = "extends Label
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	text = \"Score1: \" + str(Global.score1)
+"
+
+[sub_resource type="GDScript" id="GDScript_0mjhs"]
+script/source = "extends Label
+
+func _process(delta):
+	text = \"Score2: \" + str(Global.score2)
+"
+
+[sub_resource type="GDScript" id="GDScript_7vgxx"]
+script/source = "extends Area2D
+
+func _physics_process(delta):
+	var dir = Input.get_axis(\"p1up\", \"p1down\")
+	if dir != 0:
+		position.y += dir * Global.player_speed * delta
+		if position.y < 50:
+			position.y = 50
+		elif position.y > 598:
+			position.y = 598
+"
+
+[sub_resource type="GDScript" id="GDScript_dibgt"]
+script/source = "extends Area2D
+
+func _physics_process(delta):
+	var dir = Input.get_axis(\"p2up\", \"p2down\")
+	if dir != 0:
+		position.y += dir * Global.player_speed * delta
+		if position.y < 50:
+			position.y = 50
+		elif position.y > 598:
+			position.y = 598
+"
+
+[node name="Pong" type="Node2D"]
+script = ExtResource("1_mjex6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 1)
+
+[node name="LeftWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(-31.5, 325.5)
+shape = SubResource("RectangleShape2D_f4o87")
+
+[node name="RightWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(1177.25, 325)
+shape = SubResource("RectangleShape2D_51dm4")
+
+[node name="UpWall" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_6jl4k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
+position = Vector2(576, -29)
+shape = SubResource("RectangleShape2D_8stox")
+
+[node name="DownWall" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_2qoj7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DownWall"]
+position = Vector2(575, 670.25)
+shape = SubResource("RectangleShape2D_d6jek")
+
+[node name="Line" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+scale = Vector2(2, 5)
+texture = ExtResource("1_3iwb7")
+
+[node name="Score1" type="Label" parent="."]
+offset_left = 239.0
+offset_top = 16.0
+offset_right = 314.0
+offset_bottom = 42.0
+text = "Player 1 : "
+script = SubResource("GDScript_cm28y")
+
+[node name="Score2" type="Label" parent="."]
+offset_left = 807.0
+offset_top = 16.0
+offset_right = 882.0
+offset_bottom = 42.0
+text = "Player 2 : "
+script = SubResource("GDScript_0mjhs")
+
+[node name="Ball" parent="." instance=ExtResource("2_3q6p7")]
+position = Vector2(576, 324)
+linear_damp_mode = 1
+
+[node name="player1" parent="." instance=ExtResource("3_f8uf4")]
+position = Vector2(50, 324)
+script = SubResource("GDScript_7vgxx")
+
+[node name="player2" parent="." instance=ExtResource("3_f8uf4")]
+position = Vector2(1102, 324)
+script = SubResource("GDScript_dibgt")
+
+[connection signal="body_entered" from="LeftWall" to="." method="_on_left_wall_body_entered"]
+[connection signal="body_entered" from="RightWall" to="." method="_on_right_wall_body_entered"]
+[connection signal="body_entered" from="player1" to="." method="_on_player_1_body_entered"]
+[connection signal="body_entered" from="player2" to="." method="_on_player_2_body_entered"]

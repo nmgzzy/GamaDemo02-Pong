@@ -1,0 +1,147 @@
+[gd_scene load_steps=10 format=3 uid="uid://cypafwwxofa5"]
+
+[ext_resource type="PackedScene" uid="uid://3hi38bv45cb7" path="res://nodes/bricks.tscn" id="1_0h1iu"]
+[ext_resource type="Script" path="res://nodes/arkanoid.gd" id="1_i3vuw"]
+[ext_resource type="PackedScene" uid="uid://drjpvx05obpob" path="res://nodes/player.tscn" id="2_i14xx"]
+[ext_resource type="PackedScene" uid="uid://bnbmu4bfm3xrd" path="res://nodes/ball.tscn" id="4_f8nir"]
+
+[sub_resource type="GDScript" id="GDScript_affcn"]
+script/source = "extends Area2D
+
+func _physics_process(delta):
+	var dir = Input.get_axis(\"ui_left\", \"ui_right\")
+	if dir != 0:
+		position.x += dir * Global.player_speed * delta
+		if position.x < 75:
+			position.x = 75
+		elif position.x > 1152 - 75:
+			position.x = 1152 - 75
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isspi"]
+size = Vector2(1172, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0hcy"]
+size = Vector2(1172, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kbqgy"]
+size = Vector2(89, 657)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t5cgn"]
+size = Vector2(81, 661)
+
+[node name="Arkanoid" type="Node2D"]
+script = ExtResource("1_i3vuw")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="container" type="Node2D" parent="."]
+
+[node name="bricks" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(128, 56)
+
+[node name="bricks2" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(256, 56)
+
+[node name="bricks3" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(384, 56)
+
+[node name="bricks4" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(512, 56)
+
+[node name="bricks5" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(640, 56)
+
+[node name="bricks6" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(768, 56)
+
+[node name="bricks7" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(896, 56)
+
+[node name="bricks8" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(1024, 56)
+
+[node name="bricks9" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(128, 88)
+
+[node name="bricks10" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(256, 88)
+
+[node name="bricks11" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(384, 88)
+
+[node name="bricks12" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(512, 88)
+
+[node name="bricks13" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(640, 88)
+
+[node name="bricks14" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(768, 88)
+
+[node name="bricks15" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(896, 88)
+
+[node name="bricks16" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(1024, 88)
+
+[node name="bricks17" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(128, 120)
+
+[node name="bricks18" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(256, 120)
+
+[node name="bricks19" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(384, 120)
+
+[node name="bricks20" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(512, 120)
+
+[node name="bricks21" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(640, 120)
+
+[node name="bricks22" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(768, 120)
+
+[node name="bricks23" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(896, 120)
+
+[node name="bricks24" parent="container" instance=ExtResource("1_0h1iu")]
+position = Vector2(1024, 120)
+
+[node name="player" parent="." instance=ExtResource("2_i14xx")]
+position = Vector2(576, 600)
+rotation = 1.5708
+scale = Vector2(1, 1.5)
+script = SubResource("GDScript_affcn")
+
+[node name="UpWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
+position = Vector2(576, -29)
+shape = SubResource("RectangleShape2D_isspi")
+
+[node name="DownWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DownWall"]
+position = Vector2(576, 672)
+shape = SubResource("RectangleShape2D_i0hcy")
+
+[node name="LeftWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(-35.5, 327.5)
+shape = SubResource("RectangleShape2D_kbqgy")
+
+[node name="RightWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(1183.5, 325.5)
+shape = SubResource("RectangleShape2D_t5cgn")
+
+[node name="Ball" parent="." instance=ExtResource("4_f8nir")]
+position = Vector2(576, 576)
